@@ -23,10 +23,11 @@ export default {
 <style scoped lang="scss">
 .card{
     width: 100%;
+    height: 100%;
     box-sizing: border-box;
     background: #F5F8FA;
     font-family: 'Roboto', sans-serif;
-    padding: 12px;
+    padding: 16px 24px;
     margin: 15px 0;
     text-align: center;
     cursor: pointer;

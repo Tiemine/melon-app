@@ -20,6 +20,7 @@ export default {
     background: #000;
     &__wrapper{
         width: 100%;
+        max-width: 1500px;
     }
 }
 </style>

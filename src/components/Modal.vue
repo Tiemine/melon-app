@@ -1,10 +1,9 @@
 <template>
   <div class="modal">
-    <div class="modal__wrapper"></div>
+    <div class="modal__wrapper" @click="$emit('clicked')"></div>
     <div class="modal__content">
-        <sloted>
-            teste
-        </sloted>
+        <slot>
+        </slot>
     </div>
   </div>
 </template>
@@ -26,6 +25,7 @@ export default {
 .modal{
     position: absolute;
     top: 0;
+    text-align: center;
     &__wrapper{
         background: #fff;
         opacity: 0.7;
@@ -34,7 +34,7 @@ export default {
         z-index: 1;
     }  
     &__content{
-        width: 50vw;
+        width: 600px;
         position: fixed;
         background: #fff;
         top: 50%;
