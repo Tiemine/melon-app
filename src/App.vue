@@ -2,15 +2,18 @@
   <div id="app">
     <div class="wrapper">
       <aside class="left-content">
-        <Button width="fullWidth" type="primary">Add Source</Button>
-        <Card :crossIcon="true" @clicked="openModal = true">
-          <p class="card-title">Add media source</p>
-          <p class="card-subtitle">Screenshare, Camera</p>
-        </Card>
+        <Button width="fullWidth" type="primary" @clicked="addNewCard">Add Source</Button>
+        <MediaCard 
+        v-for="(card, index) in cardList" 
+        :key="index" 
+        @clicked="chooseMedia(index)"
+        :screenshare="card.type === 'screenshare'"
+        :video="card.type === 'video'"
+        />
       </aside>
       <section class="right-content">
-        <Stream/>
-        <WebcamLayout/>
+        <Stream :layoutType="streamData.getLayoutType"/>
+        <WebcamLayout :layoutType="streamData.getLayoutType"/>
         <nav>
           <ButtonBar/>
         </nav>
@@ -19,11 +22,11 @@
     <Modal v-if="openModal" @clicked="openModal = false">
       <h3 class="modal__title">Add a new media source</h3>
       <div class="modal__cards">
-        <Card>
+        <Card @clicked="addScreenshare">
           <p class="card__title">Screenshare</p>
           <p class="card__subtitle">Share your entire screen, window or a specific Chrome tab</p>
         </Card>
-        <Card>
+        <Card @clicked="addVideo">
           <p class="card__title">Video Feed</p>
           <p class="card__subtitle">Share a feed of your in-built webcam and microphone. If you do not have a webcam, you can use a “virtual” webcam such as Streamlabs Desktop virtual camera</p>
         </Card>
@@ -39,6 +42,10 @@ import Card from './components/Card.vue'
 import Stream from './components/Stream.vue'
 import Modal from './components/Modal.vue'
 import WebcamLayout from './components/WebcamLayout.vue'
+import MediaCard from './components/MediaCard.vue'
+
+import { useStreamStore } from './store/streamData'
+
 
 export default {
   name: 'App',
@@ -48,11 +55,31 @@ export default {
     Card,
     Stream,
     Modal,
-    WebcamLayout
+    WebcamLayout,
+    MediaCard
 },
 	data() {
 		return {
-      openModal : false
+      openModal : false,
+      cardList: [],
+      streamData: useStreamStore()
+    }
+  },
+  methods: {
+    addNewCard: function(){
+      this.cardList.push({type: '', active: false})
+    },
+    addScreenshare: function(){
+      this.cardList[this.streamData.currentCardIndex].type = 'screenshare';
+      this.openModal = false;
+    },
+    addVideo: function(){
+      this.cardList[this.streamData.currentCardIndex].type = 'video';
+      this.openModal = false;
+    },
+    chooseMedia: function(idx){
+      this.openModal = true;
+      this.streamData.currentCardIndex = idx;
     }
   }
 }
@@ -74,23 +101,13 @@ body{
   .wrapper{
     display: flex;
     height: 100vh;
+    overflow: hidden;
     .left-content{
       width: 15vw;
       box-sizing: border-box;
       border-right: 3px solid #E5EAED;
       padding: 12px;
-      .card-title{
-        color: #000;
-        font-weight: 500;
-        font-size: 18px;
-        margin: 8px 0;
-      }
-      .card-subtitle{
-        color: #757575;
-        font-size: 14px;
-        font-weight: 400;
-        margin: 8px 0;
-      }
+      overflow-y: scroll;
     }
     .right-content{
       width: 85vw;

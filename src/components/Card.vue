@@ -1,7 +1,6 @@
 <template>
   <div>
       <div class="card" @click="$emit('clicked')">
-          <span v-if="crossIcon" class="card__cross" aria-hidden="true">+</span>
           <slot></slot>
       </div>
   </div>
@@ -9,13 +8,7 @@
 
 <script>
 export default {
-  name: 'Card',
-  props: {
-    crossIcon: {
-        type: Boolean,
-        default: false
-    }
-  }
+  name: 'Card'
 }
 </script>
 
@@ -31,11 +24,5 @@ export default {
     margin: 15px 0;
     text-align: center;
     cursor: pointer;
-    &__cross{
-      font-size: 36px;
-      line-height: 30px;
-      margin-top: 20px;
-      color: #128079;
-      }
     }
 </style>
