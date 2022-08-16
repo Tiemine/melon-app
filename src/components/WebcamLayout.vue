@@ -1,5 +1,6 @@
 <template>
   <div class="webcam-layout">
+    <!-- This component has 3 possible values: video, screenshare and splitted, for each of them i created a v-for in order to reutilize code-->
       <div v-if="layoutType === 'video'" class="webcam-layout--webcam-only" >
         <button
           v-for="(item, idx) in ['fullscreen', 'screen80', 'screen60']"

@@ -118,7 +118,7 @@ body{
       width: 15vw;
       box-sizing: border-box;
       border-right: 3px solid #E5EAED;
-      padding: 12px;
+      padding: 16px;
       overflow-y: scroll;
     }
     .right-content{

@@ -1,5 +1,7 @@
 <template>
   <div>
+    <!-- This component receives the type property so this way it works for all the possible components
+    on the project -->
       <button
         :class="['button', `button--${type}`, `button--${width}`]"
         @click="$emit('clicked')"
@@ -28,7 +30,7 @@ export default {
 .button{
     border: 0;
     font-family: 'Roboto', sans-serif;
-    padding: 12px;
+    padding: 16px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;

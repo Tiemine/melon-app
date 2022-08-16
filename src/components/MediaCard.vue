@@ -1,5 +1,7 @@
 <template>
   <div>
+        <!-- This component has two states, one for the placeholder and the other state for when
+            the user have already choose a video or screenshare media -->
       <div 
       v-if="!screenshare && !video"
       class="media-card media-card--no-media" 

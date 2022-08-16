@@ -2,6 +2,7 @@
   <div class="stream__wrapper">
       <div class="stream">
           <div class="screenshare" v-if="layoutType === 'screenshare'"></div>
+            <!-- This component would receive different types of style so I binded the classes depending on the store value of what was selected -->
           <div 
           :class="['video', 
           {'video--fullscreen' : streamData.layoutSetting === 'webcam-fullscreen'},
