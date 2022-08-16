@@ -87,11 +87,19 @@ export default {
       let mediaType = this.cardList[index].type
 
       let sameKind = this.cardList.filter((el) => el.type === mediaType)
-      sameKind.forEach((el) => {
-        el.active = false
-      })
 
-      this.cardList[index].active = !this.cardList[index].active
+      if (sameKind.length > 1) {
+        const shouldChange = this.cardList[index].active ? false : true
+
+        sameKind.forEach((el) => {
+          el.active = false
+        })
+        if (shouldChange) {
+          this.cardList[index].active = !this.cardList[index].active
+          }
+      } else {
+        this.cardList[index].active = !this.cardList[index].active
+      }
     }
   }
 }
