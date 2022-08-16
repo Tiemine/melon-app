@@ -124,6 +124,8 @@ body{
     overflow: hidden;
     .left-content{
       width: 15vw;
+      max-width: 320px;
+      min-width: 232px;
       box-sizing: border-box;
       border-right: 3px solid #E5EAED;
       padding: 16px;
