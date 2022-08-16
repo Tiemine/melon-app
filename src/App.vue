@@ -7,8 +7,10 @@
         v-for="(card, index) in cardList" 
         :key="index" 
         @clicked="chooseMedia(index)"
+        @isActive="setActive(index)"
         :screenshare="card.type === 'screenshare'"
         :video="card.type === 'video'"
+        :active="card.active"
         />
       </aside>
       <section class="right-content">
@@ -80,6 +82,16 @@ export default {
     chooseMedia: function(idx){
       this.openModal = true;
       this.streamData.currentCardIndex = idx;
+    },
+    setActive: function(index) {
+      let mediaType = this.cardList[index].type
+
+      let sameKind = this.cardList.filter((el) => el.type === mediaType)
+      sameKind.forEach((el) => {
+        el.active = false
+      })
+
+      this.cardList[index].active = !this.cardList[index].active
     }
   }
 }

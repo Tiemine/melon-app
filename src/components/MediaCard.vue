@@ -9,11 +9,13 @@
           <p class="media-card__subtitle">Screenshare, Camera</p>
       </div>
       <div class="media-card media-card--screenshare-only" v-if="screenshare">
-        <Button @clicked="showStream">Show on stream</Button>
+        <Button @clicked="showStream" v-if="!active">Show on stream</Button>
+        <Button @clicked="removeStream" type="tertiary" v-if="active">Hide on stream</Button>
         <div class="card-text">My screen feed</div>
       </div>
       <div class="media-card media-card--video-only" v-if="video">
-        <Button @clicked="showStream">Show on stream</Button>
+        <Button @clicked="showStream" v-if="!active">Show on stream</Button>
+        <Button @clicked="removeStream" type="tertiary" v-if="active">Hide on stream</Button>
         <div class="card-text">My video feed</div>
       </div>
   </div>
@@ -34,6 +36,10 @@ export default {
         video: {
             type: Boolean,
             default: false
+        },
+        active: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
@@ -45,6 +51,11 @@ export default {
     methods: {
         showStream: function() {
             this.video ? this.streamData.video = true : this.streamData.screenshare = true;
+            this.$emit('isActive')
+        },
+        removeStream: function() {
+            this.video ? this.streamData.video = false : this.streamData.screenshare = false;
+            this.$emit('isActive')
         }
     }
 }

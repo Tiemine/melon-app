@@ -1,31 +1,22 @@
 <template>
   <div class="webcam-layout">
       <div v-if="layoutType === 'video'" class="webcam-layout--webcam-only" >
-        <button 
-        :class="['webcam-only__fullscreen', {'webcam-only__fullscreen--active' : active === 'webcam-fullscreen'}]"
-        @click="setLayout('webcam-fullscreen')"
-        ></button>
-        <button 
-        :class="['webcam-only__screen80', {'webcam-only__screen80--active' : active === 'webcam-screen80'}]"
-        @click="setLayout('webcam-screen80')"
-        ></button>
-        <button 
-        :class="['webcam-only__screen60', {'webcam-only__screen60--active' : active === 'webcam-screen60'}]"
-        @click="setLayout('webcam-screen60')"
+        <button
+          v-for="(item, idx) in ['fullscreen', 'screen80', 'screen60']"
+          :key="item"
+          :class="`webcam-only__${item} ${idx === active ? `webcam-only__${item}--active` : ''}`"
+          @click="setLayout(`webcam-${item}`, idx)"
         ></button>
       </div>
       <div v-if="layoutType === 'splitted'" class="webcam-layout--webcam-screenshare">
-        <button 
-        :class="['webcam-screenshare__fixed-left', {'webcam-screenshare__fixed-left--active' : active === 'webcam-screenshare-fixed-left'}]"
-        @click="setLayout('webcam-screenshare-fixed-left')"
+
+        <button
+          v-for="(item, idx) in ['fixed-left', 'fixed-right', 'fixed-side']"
+          :key="item"
+          :class="`webcam-screenshare__${item} ${idx === active ? `webcam-screenshare__${item}--active` : ''}`"
+          @click="setLayout(`webcam-screenshare-${item}`, idx)"
         ></button>
-        <button :class="['webcam-screenshare__fixed-right', {'webcam-screenshare__fixed-right--active' : active === 'webcam-screenshare-fixed-right'}]"
-        @click="setLayout('webcam-screenshare-fixed-right')"
-        >
-        </button>
-        <button :class="['webcam-screenshare__fixed-side', {'webcam-screenshare__fixed-side--active' : active === 'webcam-screenshare-fixed-side'}]"
-        @click="setLayout('webcam-screenshare-fixed-side')"
-        ></button>
+
       </div>
       <div v-if="layoutType === 'screenshare'" class="webcam-layout--webcam-screenshare">
         <button class="screenshare-only--active"></button>
@@ -46,14 +37,28 @@ export default {
   },
   data(){
     return {
-      active: '',
+      active: 0,
       streamData: useStreamStore()
     }
   },
   methods: {
-    setLayout: function(model) {
-      this.active = model;
-      this.streamData.layoutSetting = this.active;
+    setLayout: function(model, idx) {
+      this.active = idx;
+      this.streamData.layoutSetting = model;
+    }
+  },
+  beforeUpdate(){
+    if(this.streamData.layoutSetting === "" && this.layoutType === "video"){
+      this.active = 0;
+      this.streamData.layoutSetting = "webcam-fullscreen"
+    }
+    if(this.streamData.layoutSetting.includes('webcam-screenshare') && this.layoutType === "video"){
+      this.active = 0;
+      this.streamData.layoutSetting = "webcam-fullscreen"
+    }
+    if(!this.streamData.layoutSetting.includes('webcam-screenshare') && this.layoutType === "splitted"){
+      this.active = 0;
+      this.streamData.layoutSetting = "webcam-screenshare-fixed-left"
     }
   }
 }
